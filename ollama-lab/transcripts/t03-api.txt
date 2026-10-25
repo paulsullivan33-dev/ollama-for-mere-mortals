@@ -1,0 +1,126 @@
+$ curl -s http://localhost:11434/
+Ollama is running
+$ curl -s http://localhost:11434/api/version
+{"version":"0.40.11"}
+$ curl -s http://localhost:11434/api/tags
+{
+    "models": [
+        {
+            "name": "llama3.2:1b",
+            "model": "llama3.2:1b",
+            "modified_at": "2026-10-25T00:38:57.491657641Z",
+            "size": 1321098329,
+            "digest": "baf6a787fdffd633537aa2eb51cfd54cb93ff08e28040095462bb63daf552878",
+            "details": {
+                "parent_model": "",
+                "format": "gguf",
+                "family": "llama",
+                "families": [
+                    "llama"
+                ],
+                "parameter_size": "1.2B",
+                "quantization_level": "Q8_0",
+                "context_length": 131072,
+                "embedding_length": 2048,
+                "runner": "ggml"
+            },
+            "capabilities": [
+                "completion",
+                "tools"
+            ]
+        }
+    ]
+}
+$ curl -s http://localhost:11434/api/generate -d @generate-request.json
+{
+    "model": "llama3.2:1b",
+    "created_at": "2026-10-25T01:07:51.971458048Z",
+    "response": "Here are ten common garden birds, along with a brief description of each:\n\n1. **Robin**: Known for its distinctive red breast, a robin is a year-round visitor to gardens, often singing from a perch.\n2. **Blue Tit**: With its bright blue and yellow feathers, a blue tit is a common sight in gardens, particularly in coniferous trees.\n3. **Blackbird**: This sleek black bird is known for its melodic songs and is often found in gardens with fruit trees.\n4. **Starling**: With its iridescent feathers and distinctive call, a starling is a frequent visitor to gardens, particularly during the winter months.\n5. **Maggie May**: A magpie is a common sight in gardens, particularly in areas with food sources like bird feeders and suet.\n6. **Chaffinch**: A small, energetic bird with a distinctive black face, a chaffinch is often seen flitting between garden shrubs.\n7. **Woodpigeon**: This large, grey bird is a common resident of gardens, often foraging for food on the ground.\n8. **Goldfinch**: With its bright yellow feathers and black wings, a goldfinch is a welcome visitor to gardens, particularly in areas with sunflowers.\n9. **Sparrowhawk**: A small, swift bird of prey, a sparrowhawk is often seen hunting in gardens, particularly in areas with small birds and insects.\n10. **Lynx**: A small, solitary bird with a distinctive white face and black wings, a lynx is a rare but welcome visitor to gardens, particularly in areas with dense vegetation.",
+    "done": true,
+    "done_reason": "stop",
+    "context": [
+        128006,
+        9125,
+        128007,
+        271,
+        38766,
+        1303,
+        33025,
+        2696,
+        25,
+        6790,
+        220,
+        2366,
+        18,
+        271,
+        128009,
+        128006,
+        882,
+        128007,
+        271,
+        861,
+        5899,
+        4279,
+        13863,
+$ (speed from the numbers above: eval_count / eval_duration)
+eval_count=220 eval_duration=35.97s -> 6.1 tokens/s generated
+prompt_eval_count=44 prompt_eval_duration=1.25s -> 35.1 tokens/s prompt eval
+load_duration=9.35s total_duration=46.59s
+$ curl -s http://localhost:11434/api/chat -d @chat-request.json
+{
+    "model": "llama3.2:1b",
+    "created_at": "2026-10-25T01:08:52.599918447Z",
+    "message": {
+        "role": "assistant",
+        "content": "Red, blue, and yellow."
+    },
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 5401594112,
+    "load_duration": 62167244,
+    "prompt_eval_count": 36,
+    "prompt_eval_cached_count": 15,
+    "prompt_eval_duration": 2922886000,
+
+$ curl -s http://localhost:11434/api/generate (streaming, first 3 lines)
+{"model":"llama3.2:1b","created_at":"2026-10-25T01:08:54.829011009Z","response":"1","done":false}
+{"model":"llama3.2:1b","created_at":"2026-10-25T01:08:55.303474245Z","response":"\n\n","done":false}
+{"model":"llama3.2:1b","created_at":"2026-10-25T01:08:55.75237341Z","response":"2","done":false}
+
+$ curl -s http://localhost:11434/v1/models   (the OpenAI-shaped door)
+{
+    "object": "list",
+    "data": [
+        {
+            "id": "llama3.2:1b",
+            "object": "model",
+            "created": 1792888737,
+            "owned_by": "library"
+        }
+    ]
+}
+$ curl -s http://localhost:11434/v1/chat/completions -d @v1-request.json
+{
+    "id": "chatcmpl-906",
+    "object": "chat.completion",
+    "created": 1792890543,
+    "model": "llama3.2:1b",
+    "system_fingerprint": "fp_ollama",
+    "choices": [
+        {
+            "index": 0,
+            "message": {
+                "role": "assistant",
+                "content": "Hello."
+            },
+            "finish_reason": "stop"
+        }
+    ],
+    "usage": {
+        "prompt_tokens": 32,
+        "prompt_tokens_details": {
+            "cached_tokens": 20
+
+$ ollama ps
+NAME           ID              SIZE      PROCESSOR    CONTEXT    RUNNER      UNTIL
+llama3.2:1b    baf6a787fdff    1.5 GB    100% CPU     4096       llamacpp    4 minutes from now

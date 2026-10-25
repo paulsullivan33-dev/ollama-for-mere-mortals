@@ -1,0 +1,51 @@
+Ollama lab — working notes
+====================================================================
+Machine: 2 CPU cores, 7.7 GiB RAM, no GPU,
+Ubuntu 24.04, Ollama 0.40.11. The box was
+shared with other work the whole time
+(load average 3-7), so every timing here
+is a contended timing.
+
+STORE
+  OLLAMA_MODELS pointed at a folder under
+  ~/workspace so the 1.3 GB download is
+  one deletable folder, not scattered
+  through a home directory.
+
+WHAT RAN
+  install script (needed zstd first) ->
+  systemd service created and started by
+  the installer -> service stopped ->
+  server run by hand for the exercises.
+  pull llama3.2:1b (1.2B, Q8_0, 1.3 GB).
+  CLI: list, show, run --verbose, ps,
+  stop, cp, rm, create, show --modelfile.
+  API: /, /api/version, /api/tags,
+  /api/generate (plain + streaming),
+  /api/chat, /v1/models,
+  /v1/chat/completions.
+  Modelfile: plain-talker (temperature
+  0.3 + plain-spoken editor system
+  prompt), built and run against its
+  parent on the same question.
+  Serving: second server on :11435, same
+  store, client aimed with OLLAMA_HOST.
+
+SPEEDS (this box, this day, shared)
+  --verbose run at peak load:
+    eval rate 1.85 tokens/s
+  API generate, quieter moment:
+    220 tokens in 35.97 s = 6.1 tokens/s
+    prompt eval 35.1 tokens/s
+  Loaded size in ollama ps: 1.5 GB,
+  context 4096 (the server default,
+  confirmed in the server log).
+
+ODDITIES KEPT IN THE TRANSCRIPTS
+  The 1B model refused a harmless piped
+  question ("what is a haiku?") with a
+  canned refusal. Small models do this;
+  t01 keeps it.
+  A cold load under contention took
+  9-11 s and looked, from the client,
+  like a hang. It was not one.

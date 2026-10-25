@@ -1,0 +1,34 @@
+$ curl -fsSL https://ollama.com/install.sh | sh
+>>> Installing ollama to /usr/local
+>>> Downloading ollama-linux-amd64.tar.zst
+[download progress elided]
+>>> Creating ollama user...
+>>> Adding ollama user to render group...
+>>> Adding ollama user to video group...
+>>> Adding current user to ollama group...
+>>> Creating ollama systemd service...
+>>> Enabling and starting ollama service...
+WARNING: Unable to detect NVIDIA/AMD GPU. Install lspci or lshw to automatically detect and install GPU dependencies.
+(no GPU on this machine; CPU inference it is)
+
+$ ollama --version
+ollama version is 0.40.11
+
+$ systemctl status ollama --no-pager | head -6
+● ollama.service - Ollama Service
+     Loaded: loaded (/etc/systemd/system/ollama.service; enabled; preset: enabled)
+     Active: active (running) since Sun 2026-10-25 00:58:01 UTC; 16s ago
+   Main PID: 30994 (ollama)
+        CPU: 247ms
+     CGroup: /system.slice/ollama.service
+
+$ curl -s http://localhost:11434/
+Ollama is running
+$ curl -s http://localhost:11434/api/version
+{"version":"0.40.11"}
+
+Note for the lab: the service above runs as the ollama user with
+its own (empty) store. The lab exercises in the later transcripts
+stop this service and run a server by hand with
+OLLAMA_MODELS pointing at the lab store under ~/workspace,
+so everything the lab downloads stays in one deletable folder.

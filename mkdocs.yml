@@ -1,0 +1,28 @@
+site_name: Ollama for Mere Mortals
+site_description: Running large language models on a machine of your own. Pulling models from the library, chatting from the command line, shaping your own models with a Modelfile, the HTTP API, and serving models to the rest of the house.
+site_url: https://paulsullivan33-dev.github.io/ollama-for-mere-mortals/
+
+# Guides live at the repo root (nice for GitHub browsing).
+# The deploy workflow copies them into docs/ before building.
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - What Ollama Is: what-ollama-is.md
+  - The Moving Parts: the-moving-parts.md
+  - Installing Ollama: installing-ollama.md
+  - Your First Model: your-first-model.md
+  - Models and the Library: models-and-the-library.md
+  - Modelfiles and Custom Models: modelfiles-and-custom-models.md
+  - Disk, Memory and Context: disk-memory-and-context.md
+  - The HTTP API: the-http-api.md
+  - Generation Settings: generation-settings.md
+  - Running as a Service: running-as-a-service.md
+  - Moving and Backing Up Models: moving-and-backing-up.md
+  - Recipes: recipes.md
+  - The Neighbours: the-neighbours.md
+  - Limits: limits.md
+  - Troubleshooting: troubleshooting.md
+  - Glossary: glossary.md
+  - Writing Criteria: criteria.md

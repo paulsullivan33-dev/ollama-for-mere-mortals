@@ -1,0 +1,73 @@
+Ollama — the distilled commands
+====================================================================
+Placeholders: <model> is a model name with
+a tag (llama3.2:1b); <host> is a server
+address (192.168.0.25:11434).
+
+FIRST CONTACT (chapters 3-4)
+--------------------------------------------------------------------
+  ollama --version
+  curl http://localhost:11434/     # Ollama is running
+  ollama pull llama3.2:1b
+  ollama run llama3.2:1b           # chat; leave with /bye
+  ollama run llama3.2:1b "Write a haiku about a server room."
+  ollama run --verbose llama3.2:1b "..."   # timings, honest speed
+  ollama list                      # the shelf: what you own
+  ollama ps                        # the desk: what is loaded
+  ollama stop llama3.2:1b          # unload it now
+  ollama show llama3.2:1b          # the card
+  ollama show --modelfile llama3.2:1b
+
+IN A CHAT (chapter 4, 9)
+--------------------------------------------------------------------
+  /set parameter temperature 0.2   # careful clerk
+  /set parameter temperature 1.3   # jazz musician
+  /set parameter num_ctx 8192      # a bigger window, at a price
+  /show parameters                 # what is in force
+  /bye
+
+MODELS (chapter 5)
+--------------------------------------------------------------------
+  ollama pull qwen3:8b             # name the size; skip :latest
+  ollama pull llama3.2:1b-instruct-q8_0   # a specific quant
+  ollama cp llama3.2:1b llama3.2:1b-keeper   # cheap snapshot
+  ollama rm llama3.2:1b            # gone, space freed
+
+CUSTOM MODELS (chapter 6)
+--------------------------------------------------------------------
+  ollama create plain-talker -f Modelfile
+  ollama run plain-talker
+  ollama show --modelfile plain-talker     # the recipe, back
+  ollama create imported -f Modelfile.from-gguf
+                                   # Modelfile says: FROM ./file.gguf
+
+THE API (chapter 8)
+--------------------------------------------------------------------
+  curl http://localhost:11434/api/tags
+  curl http://localhost:11434/api/version
+  curl http://localhost:11434/api/generate -d '{
+    "model": "llama3.2:1b", "prompt": "...", "stream": false}'
+  curl http://localhost:11434/api/chat -d '{
+    "model": "llama3.2:1b", "stream": false,
+    "messages": [{"role": "user", "content": "..."}]}'
+  curl http://localhost:11434/api/embed -d '{
+    "model": "nomic-embed-text", "input": "some text"}'
+  # OpenAI-shaped door: base URL http://localhost:11434/v1
+
+SERVING (chapter 10)
+--------------------------------------------------------------------
+  OLLAMA_HOST=http://192.168.0.25:11434 ollama list   # client side
+  OLLAMA_HOST=0.0.0.0:11434 ollama serve             # server side
+  sudo systemctl edit ollama       # drop-in for the service:
+  #   [Service]
+  #   Environment="OLLAMA_HOST=0.0.0.0:11434"
+  #   Environment="OLLAMA_MODELS=/data/ollama-models"
+  #   Environment="OLLAMA_KEEP_ALIVE=24h"
+  sudo systemctl restart ollama
+  journalctl -u ollama             # the server's log
+
+MOVING MODELS (chapter 11)
+--------------------------------------------------------------------
+  du -sh ~/.ollama/models
+  cp -r ~/.ollama/models /path/to/usb/
+  ollama signin ; ollama push you/your-model   # publish, not backup

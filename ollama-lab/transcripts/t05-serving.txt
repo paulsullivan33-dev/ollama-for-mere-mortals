@@ -1,0 +1,14 @@
+$ OLLAMA_HOST=127.0.0.1:11435 ollama serve &   (second server, second port, same model store)
+$ curl -s http://localhost:11435/
+Ollama is running
+$ OLLAMA_HOST=http://127.0.0.1:11435 ollama list   (client pointed at the second server)
+NAME                   ID              SIZE      MODIFIED
+plain-talker:latest    d2d69ba45a94    1.3 GB    15 seconds ago
+llama3.2:1b            baf6a787fdff    1.3 GB    32 minutes ago
+
+$ OLLAMA_HOST=http://127.0.0.1:11435 ollama run llama3.2:1b "Say hello in exactly three words."
+Hi there.
+
+$ ollama ps   (on the first server: nothing loaded there by the second server run)
+NAME           ID              SIZE      PROCESSOR    CONTEXT    RUNNER      UNTIL
+llama3.2:1b    baf6a787fdff    1.5 GB    100% CPU     4096       llamacpp    4 minutes from now

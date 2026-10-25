@@ -1,0 +1,11 @@
+$ ollama run no-such-model:1b "hello"
+pulling manifest pulling manifest
+Error: pull model manifest: file does not exist
+exit=1
+
+$ curl -s http://localhost:11434/api/generate -d '{"model":"no-such-model:1b","prompt":"hello","stream":false}'
+{"error":"model 'no-such-model:1b' not found"}
+$ ollama list   (nothing was added by the failed calls)
+NAME                   ID              SIZE      MODIFIED
+plain-talker:latest    d2d69ba45a94    1.3 GB    26 seconds ago
+llama3.2:1b            baf6a787fdff    1.3 GB    32 minutes ago
